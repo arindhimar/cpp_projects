@@ -1,0 +1,22 @@
+class bank
+-only data members
+-create every single trans history(files if possible)
+-pass fxns here
+
+
+class admin-
+-block acc(flag)
+-show all details
+-main access pass
+-admin fxn(sub_menu)
+
+
+class user
+-user sub(menu but req pass and acc no at start)
+-pass
+-create account(need admins pass) first temp than return real obj;
+-bal enquiry
+-deposit
+-withdraw
+-close acc
+-details
