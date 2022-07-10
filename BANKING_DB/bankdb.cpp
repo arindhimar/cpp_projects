@@ -12,7 +12,7 @@ class bankdb
         float bal,add,with;
     }d[100];
 
-    int acc_no,flag;
+    int acc_no,flag,i;
     char apass[20],tpass[20];
 
 
@@ -48,7 +48,8 @@ class bankdb
     //NEW ACCOUNT
     void ccreate(struct details t)
     {
-        d[n-1]=t;
+        d[n]=t;
+
     }
 
 
@@ -64,18 +65,30 @@ class bankdb
 
 
     //ACCOUNT AVAILABILITY
-    int accck(int n)
+    int accck(int n1)
     {
         for(i=0;i<n;i++)
         {
-            if(d[i].acc_no==n)
+            if(n1==d[i].acc_no)
             {
-                return 0;
+                return 1;
             }
         }
         return 0;
     }
 
+
+    //CONFIRM ADDING MONEY
+    void cadd(int n1,int t_acc)
+    {
+        d[i].bal=d[i].bal+n1;
+    }
+
+    //CONFRIM REDUCE
+    void cred(int n1,int t_acc)
+    {
+        d[i].bal=d[i].bal-n1;
+    }
 
 
 };
@@ -84,10 +97,26 @@ class bankdb
 
 
 
+
+
+
+
+void amenu()
+{
+    cout<<"\n\t\t ADMIN PANEL"<<endl;
+    cout<<"\n\t 1 - CREATE ACCOUNT"<<endl;
+    cout<<"\n\t 2 - VIEW ALL ACCOUNT DETAILS"<<endl;
+    cout<<"\n\t 3 - SEARCH ACCOUNT"<<endl;
+    cout<<"\n\t 4 - BLOCK ACCOUNT"<<endl;
+    cout<<"\n\t 5 - VIEW ALL TRANSACTIONS"<<endl;
+    cout<<"\n\t 6 - ACCOUNT WISE TRANSACTIONS"<<endl;
+    cout<<"\n\t 7 - RETURN TO MAIN MENU"<<endl;
+}
 class admin:public bankdb
 {
     char s[20];
     int ck,i;
+    int acc_n,deb;
     public:
 
     void npass()
@@ -106,8 +135,9 @@ class admin:public bankdb
     //CREATING ACCOUNT
     void create()
     {
-        n=n+1;
+
         temp.acc_no=n;
+        cout<<"\nACCOUNT NO :   "<<temp.acc_no;
         cout<<"\nENTER NAME         : ";
         cin>>temp.name;
         cout<<"\nENTER LOCALITY     : ";
@@ -123,6 +153,7 @@ class admin:public bankdb
             }
         }while(ck!=0);
         ccreate(temp);
+        n=n+1;
     }
 
 
@@ -144,8 +175,7 @@ class admin:public bankdb
     {
         cout<<"\nENTER ACCOUNT NO TO SEARCH         ";
         cin>>s_acc;
-        ck=accck(s_acc);
-        if(ck==1)
+        if(accck(s_acc))
         {
             disp(s_acc);
         }
@@ -157,21 +187,58 @@ class admin:public bankdb
 }a;
 
 
+
+
+
+
+//CLASS FOR USER
+void umenu()
+{
+    cout<<"\n\t\t USER PANEL"<<endl;
+    cout<<"\n\t 1 - VIEW ACCOUNT DETAILS"<<endl;
+    cout<<"\n\t 2 - DEBIT MONEY"<<endl;
+    cout<<"\n\t 3 - WITHDRAW MONEY"<<endl;
+    cout<<"\n\t 4 - UPDATE NAME/LOCALITY"<<endl;
+    cout<<"\n\t 5 - CLOSE ACCOUNT"<<endl;
+    cout<<"\n\t 6 - RETURN TO MAIN MENU"<<endl;
+}
 class user:public bankdb
 {
-    int ck;
-
+    int ck,deb;
     char s[20];
     public:
 
-
-    //NEW DATABASE
-    void ucpass()
+    void ucpass(int acc_n)
     {
 
     }
 
 
+    //DETAILS
+    void udisp(int no)
+    {
+        if(accck(no)==1)
+        {
+            disp(no);
+        }
+        else
+            cout<<"\nACCOUNT NOT FOUND\n";
+    }
+
+    //ADD MONEY
+    int addm(int acc_n)
+    {
+        cout<<"\nENTER AMOUNT TO ADD      ===>>>        ";
+        cin>>deb;
+        cadd(deb,acc_n);
+    }
+
+    void redm(int acc_n)
+    {
+        cout<<"\nENTER AMOUNT TO ADD      ===>>>        ";
+        cin>>deb;
+        cadd(deb,acc_n);
+    }
 
 
 
@@ -185,29 +252,10 @@ struct trans
 }t[1000];
 
 
-void amenu()
-{
-    cout<<"\n\t\t ADMIN PANEL"<<endl;
-    cout<<"\n\t 1 - CREATE ACCOUNT"<<endl;
-    cout<<"\n\t 2 - VIEW ALL ACCOUNT DETAILS"<<endl;
-    cout<<"\n\t 3 - SEARCH ACCOUNT"<<endl;
-    cout<<"\n\t 4 - BLOCK ACCOUNT"<<endl;
-    cout<<"\n\t 5 - VIEW ALL TRANSACTIONS"<<endl;
-    cout<<"\n\t 6 - ACCOUNT WISE TRANSACTIONS"<<endl;
-    cout<<"\n\t 7 - RETURN TO MAIN MENU"<<endl;
-}
 
 
-void umenu()
-{
-    cout<<"\n\t\t USER PANEL"<<endl;
-    cout<<"\n\t 1 - VIEW ACCOUNT DETAILS"<<endl;
-    cout<<"\n\t 2 - DEBIT MONEY"<<endl;
-    cout<<"\n\t 3 - WITHDRAW MONEY"<<endl;
-    cout<<"\n\t 4 - UPDATE NAME/LOCALITY"<<endl;
-    cout<<"\n\t 5 - CLOSE ACCOUNT"<<endl;
-    cout<<"\n\t 6 - RETURN TO MAIN MENU"<<endl;
-}
+
+
 
 
 int main()
@@ -286,7 +334,10 @@ int main()
 
 
     //USER PANEL FXNS
+    int uacc;
     usr:
+        cout<<"\n\t ENTER ACCOUNT NO    ===>>>      ";
+        cin>>uacc;
         do
         {
             umenu();
@@ -295,10 +346,13 @@ int main()
             switch(uopt)
             {
                 case 1:
+                    u.udisp(uacc);
                     break;
                 case 2:
+                    u.addm(uacc);
                     break;
                 case 3:
+                    u.redm(uacc);
                     break;
                 case 4:
                     break;
